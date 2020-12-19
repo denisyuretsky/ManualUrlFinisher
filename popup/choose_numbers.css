@@ -1,0 +1,40 @@
+html,
+body {
+  width: 200px;
+  margin: 0;
+  padding: 0;
+}
+
+td {
+  text-align: center;
+  font-size: 2em;
+  width: 11%;
+  background-color: #deebf4;
+  text-align: center;
+  font-size: 2em;
+  width: 11%;
+  color: #356285;
+}
+
+td:hover {
+  cursor: pointer;
+  background-color: #b0cade;
+}
+
+.selected {
+  background-color: #ffd6c6;
+}
+
+.popup {
+  width: 100%;
+  background-color: #7fa4c0;
+  display: grid;
+}
+
+.result {
+  width: 100%;
+  font-size: 3em;
+  text-align: center;
+  margin: 0;
+  color: #deebf4;
+}

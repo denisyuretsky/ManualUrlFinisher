@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "Manual URL Finisher",
+  "description": "Adds 4 numbers to the end of the provided url and opens the url in a new tab",
+  "version": "1.0",
+  "author": "Denis Yuretsky",
+  "browser_action": {
+    "default_title": "Manual URL Finisher",
+    "default_popup": "popup/choose_numbers.html"
+  },
+  "permissions": ["activeTab", "storage"],
+  "background": {
+    "page": "popup/choose_numbers.html"
+  },
+  "options_page": "options/options.html"
+}
