@@ -1,6 +1,6 @@
 "use strict";
 
-import { DEFAULT_CONTENT_URL, DEFAULT_NUMBER, PLACEHOLDER_FOR_DEFAULT_NUMBER } from "../shared/constants.js";
+import { DEFAULT_CONTENT_URL, DEFAULT_NUMBER, DISPLAY_NAME_FOR_DEFAULT_NUMBER } from "../shared/constants.js";
 import { loadStoredData } from "../shared/storage.js";
 
 let tempResult = [];
@@ -9,7 +9,7 @@ let contentUrl = DEFAULT_CONTENT_URL;
 const areAllNumbersEntered = () => tempResult.every((number) => number >= 0);
 
 const composeResultText = () =>
-  tempResult.map((number) => (number == DEFAULT_NUMBER ? PLACEHOLDER_FOR_DEFAULT_NUMBER : number)).join("");
+  tempResult.map((number) => (number == DEFAULT_NUMBER ? DISPLAY_NAME_FOR_DEFAULT_NUMBER : number)).join("");
 
 const updateDisplayedResult = () => {
   var resultElement = document.getElementById("muf-result");
