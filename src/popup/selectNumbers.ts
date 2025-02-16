@@ -1,26 +1,25 @@
 "use strict";
 
-import { DEFAULT_CONTENT_URL, DEFAULT_NUMBER, DISPLAY_NAME_FOR_DEFAULT_NUMBER } from "../shared/constants.js";
-import { loadStoredData } from "../shared/storage.js";
+import { DEFAULT_CONTENT_URL, DEFAULT_NUMBER, DISPLAY_NAME_FOR_DEFAULT_NUMBER } from "../shared/constants";
+import { loadStorageData } from "../shared/storage";
+import { OptionNumber } from "../shared/types";
 
-let tempResult = [];
+let tempResult: OptionNumber[] = [];
 let contentUrl = DEFAULT_CONTENT_URL;
 
 const areAllNumbersEntered = () => tempResult.every((number) => number >= 0);
 
-const composeResultText = () =>
+const composeResultText = (): string =>
   tempResult.map((number) => (number == DEFAULT_NUMBER ? DISPLAY_NAME_FOR_DEFAULT_NUMBER : number)).join("");
 
 const updateDisplayedResult = () => {
-  var resultElement = document.getElementById("muf-result");
-  if (resultElement) {
-    resultElement.textContent = composeResultText();
-  }
+  var resultElement = document.getElementById("muf-result") as HTMLParagraphElement;
+  resultElement.textContent = composeResultText();
 }
 
-const handleCellClick = (e) => {
-  const { cellIndex, innerText } = e.target;
-  tempResult[cellIndex] = innerText;
+const handleCellClick = (e: MouseEvent) => {
+  const { cellIndex, innerText } = e.target as HTMLTableCellElement;
+  tempResult[cellIndex] = Number(innerText) as OptionNumber;
 
   updateDisplayedResult();
 
@@ -32,8 +31,8 @@ const handleCellClick = (e) => {
 }
 
 const initialize = () => {
-  loadStoredData().then((items) => {
-    var table = document.getElementById("muf-options-table");
+  loadStorageData().then((items) => {
+    var table = document.getElementById("muf-options-table") as HTMLTableElement;
 
     tempResult = [...items.numbers];
     contentUrl = items.contentUrl;
