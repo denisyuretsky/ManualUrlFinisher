@@ -1,3 +1,11 @@
+:root {
+  --color-bg-light: #deebf4;   /* Base light background color for cells */
+  --color-bg-hover: #b0cade;   /* Background color on hover */
+  --color-bg-selected: #ffd6c6;/* Background color for selected item */
+  --color-bg-popup: #7fa4c0;   /* Popup background color */
+  --color-text: #356285;       /* Default text color */
+}
+
 html,
 body {
   width: 200px;
@@ -6,35 +14,32 @@ body {
 }
 
 td {
+  width: 11%;
   text-align: center;
   font-size: 2em;
-  width: 11%;
-  background-color: #deebf4;
-  text-align: center;
-  font-size: 2em;
-  width: 11%;
-  color: #356285;
+  background-color: var(--color-bg-light);
+  color: var(--color-text);
+  cursor: pointer;
 }
 
 td:hover {
-  cursor: pointer;
-  background-color: #b0cade;
+  background-color: var(--color-bg-hover);
 }
 
 .selected {
-  background-color: #ffd6c6;
+  background-color: var(--color-bg-selected);
 }
 
 .popup {
   width: 100%;
-  background-color: #7fa4c0;
   display: grid;
+  background-color: var(--color-bg-popup);
 }
 
 .result {
   width: 100%;
-  font-size: 3em;
-  text-align: center;
   margin: 0;
-  color: #deebf4;
+  text-align: center;
+  font-size: 3em;
+  color: var(--color-bg-light);
 }

@@ -1,20 +1,17 @@
 "use strict";
 
-var rowsCount = 4;
+import { ROWS_COUNT, DEFAULT_NUMBER } from "../shared/constants.js";
+import { loadStoredData } from "../shared/storage.js";
 
-function updateTextInput(val) {
-  document.getElementById("textInput").value = val;
-}
-
-function save_options() {
+const saveOptions = () => {
   var numbers = [];
 
-  for (var i = 0; i < rowsCount; i++) {
-    var number = document.getElementById("muf-number-" + i).value;
-    numbers[i] = number;
+  for (var i = 0; i < ROWS_COUNT; i++) {
+    var parsedNumber = Number(document.getElementById(`muf-number-${i}`).value) || DEFAULT_NUMBER;
+    numbers.push(parsedNumber);
   }
 
-  var url = document.getElementById("muf-url").value;
+  var url = document.getElementById("muf-url").value.trim();
 
   chrome.storage.sync.set(
     {
@@ -22,31 +19,26 @@ function save_options() {
       numbers: numbers,
     },
     function () {
-      var status = document.getElementById("status");
+      var status = document.getElementById("muf-status");
       status.textContent = "Options saved.";
       setTimeout(function () {
         status.textContent = "";
       }, 750);
     }
   );
+};
+
+const initialize = () => {
+  loadStoredData().then((items) => {
+    items.numbers.forEach((value, index) => {
+      document.getElementById(`muf-number-${index}`).value = value;
+    });
+
+    document.getElementById("muf-url").value = items.contentUrl;
+  });
 }
 
-function restore_options() {
-  chrome.storage.sync.get(
-    {
-      contentUrl: "",
-      numbers: [-1, -1, -1, -1],
-    },
-    function (items) {
-      for (var i = 0; i < rowsCount; i++) {
-        var element = document.getElementById("muf-number-" + i);
-        element.value = items.numbers[i];
-      }
-
-      document.getElementById("muf-url").value = items.contentUrl;
-    }
-  );
-}
-
-document.addEventListener("DOMContentLoaded", restore_options);
-document.getElementById("save").addEventListener("click", save_options);
+document.addEventListener("DOMContentLoaded", () => {
+  initialize();
+  document.getElementById("muf-save").addEventListener("click", saveOptions);
+});

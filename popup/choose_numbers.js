@@ -1,61 +1,61 @@
 "use strict";
 
-var tempResult = [];
-var url = "";
+import { DEFAULT_CONTENT_URL, DEFAULT_NUMBER, PLACEHOLDER_FOR_DEFAULT_NUMBER } from "../shared/constants.js";
+import { loadStoredData } from "../shared/storage.js";
 
-function validateAllNumbersAreEntered() {
-  return tempResult.every((number) => number >= 0);
-}
+let tempResult = [];
+let contentUrl = DEFAULT_CONTENT_URL;
 
-function getResultText() {
-  return tempResult.map((number) => (number == -1 ? "X" : number)).join("");
-}
+const areAllNumbersEntered = () => tempResult.every((number) => number >= 0);
 
-function displayResult() {
+const composeResultText = () =>
+  tempResult.map((number) => (number == DEFAULT_NUMBER ? PLACEHOLDER_FOR_DEFAULT_NUMBER : number)).join("");
+
+const updateDisplayedResult = () => {
   var resultElement = document.getElementById("muf-result");
-  resultElement.textContent = getResultText();
+  if (resultElement) {
+    resultElement.textContent = composeResultText();
+  }
 }
 
-function click(e) {
-  tempResult[e.target.cellIndex] = e.target.innerText;
+const handleCellClick = (e) => {
+  const { cellIndex, innerText } = e.target;
+  tempResult[cellIndex] = innerText;
 
-  displayResult();
+  updateDisplayedResult();
 
-  if (validateAllNumbersAreEntered()) {
+  if (areAllNumbersEntered()) {
     chrome.tabs.create({
-      url: `${url}${tempResult.join("")}`,
+      url: `${contentUrl}${tempResult.join("")}`,
     });
   }
 }
 
-function restore_options() {
-  chrome.storage.sync.get(
-    {
-      contentUrl: "",
-      numbers: [-1, -1, -1, -1],
-    },
-    function (items) {
-      var table = document.getElementById("muf-table");
+const initialize = () => {
+  loadStoredData().then((items) => {
+    var table = document.getElementById("muf-options-table");
 
-      tempResult = [...items.numbers];
-      url = items.contentUrl;
+    tempResult = [...items.numbers];
+    contentUrl = items.contentUrl;
 
+    if (table && table.rows) {
       items.numbers.forEach((number, index) => {
-        if (number >= 0) {
+        if (number >= 0
+          && table.rows[number]
+          && table.rows[number].cells[index]
+        ) {
           table.rows[number].cells[index].classList.add("selected");
         }
       });
-
-      displayResult();
     }
-  );
+
+    updateDisplayedResult();
+  });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  restore_options();
+document.addEventListener("DOMContentLoaded", () => {
+  initialize();
 
-  var divs = document.querySelectorAll("td");
-  for (var i = 0; i < divs.length; i++) {
-    divs[i].addEventListener("click", click);
-  }
+  var cells = document.querySelectorAll("td");
+  cells.forEach((cell) => cell.addEventListener("click", handleCellClick));
 });
