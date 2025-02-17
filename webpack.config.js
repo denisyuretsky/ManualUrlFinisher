@@ -71,7 +71,7 @@ module.exports = {
                 minimizerOptions: {
                     collapseWhitespace: true, // Collapse unnecessary white spaces in HTML
                     removeComments: true, // Remove HTML comments
-                    removeRedundantAttributes: true, // Remove attributes when value matches default
+                    removeRedundantAttributes: false, // Remove attributes when value matches default
                     removeScriptTypeAttributes: true, // Remove type="text/javascript" from script tags
                     removeStyleLinkTypeAttributes: true, // Remove type="text/css" from style and link tags
                     minifyJS: true, // Minify inline JavaScript within HTML

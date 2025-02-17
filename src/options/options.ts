@@ -4,19 +4,21 @@ import { ROWS_COUNT, DEFAULT_NUMBER } from "../shared/constants";
 import { loadStorageData, saveStorageData } from "../shared/storage";
 import { StorageData, OptionNumber } from "../shared/types";
 
-const saveOptions = () => {
+const handleSubmit = (event: SubmitEvent) => {
+  event.preventDefault();
   let numbers: OptionNumber[] = [];
 
   for (var i = 0; i < ROWS_COUNT; i++) {
     let selectElement = document.getElementById(`muf-number-${i}`) as HTMLSelectElement
-    let parsedNumber: number = Number(selectElement.value) || DEFAULT_NUMBER
+    const value = Number(selectElement.value);
+    const parsedNumber: number = isNaN(value) ? DEFAULT_NUMBER : value;
     numbers.push(parsedNumber as OptionNumber);
   }
 
   let textElement = document.getElementById("muf-url") as HTMLInputElement
   let url: string = textElement.value.trim();
 
-  saveStorageData( {
+  saveStorageData({
     contentUrl: url,
     numbers: numbers,
   }).then(() => {
@@ -42,6 +44,6 @@ const initialize = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   initialize();
-  let buttonElement = document.getElementById("muf-save") as HTMLButtonElement
-  buttonElement.addEventListener("click", saveOptions);
+  let formElement = document.getElementById('muf-form') as HTMLFormElement
+  formElement.addEventListener('submit', handleSubmit);
 });
