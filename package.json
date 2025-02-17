@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && webpack --mode production",
-    "start": "webpack serve --mode development"
+    "build": "npm run clean && webpack --mode production"
   },
   "repository": {
     "type": "git",
