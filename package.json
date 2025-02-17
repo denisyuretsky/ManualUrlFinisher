@@ -1,0 +1,33 @@
+{
+  "name": "manualurlfinisher",
+  "version": "1.0.0",
+  "description": "A chrome extension that adds 4 numbers to the end of the provided url and opens the url in a new tab",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denisyuretsky/ManualUrlFinisher.git"
+  },
+  "keywords": [],
+  "author": "Denis Yuretsky",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/denisyuretsky/ManualUrlFinisher/issues"
+  },
+  "homepage": "https://github.com/denisyuretsky/ManualUrlFinisher#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.0.304",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "html-minimizer-webpack-plugin": "^5.0.0",
+    "rimraf": "^6.0.1",
+    "terser-webpack-plugin": "^5.3.11",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack-cli": "^6.0.1"
+  }
+}
