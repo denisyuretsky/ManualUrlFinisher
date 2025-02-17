@@ -7,8 +7,6 @@ import { OptionNumber } from "../shared/types";
 let tempResult: OptionNumber[] = [];
 let contentUrl = DEFAULT_CONTENT_URL;
 
-const areAllNumbersEntered = () => tempResult.every((number) => number >= 0);
-
 const composeResultText = (): string =>
   tempResult.map((number) => (number == DEFAULT_NUMBER ? DISPLAY_NAME_FOR_DEFAULT_NUMBER : number)).join("");
 
@@ -16,6 +14,8 @@ const updateDisplayedResult = () => {
   var resultElement = document.getElementById("muf-result") as HTMLParagraphElement;
   resultElement.textContent = composeResultText();
 }
+
+const areAllNumbersEntered = () => tempResult.every((number) => number >= 0);
 
 const handleCellClick = (e: MouseEvent) => {
   const { cellIndex, innerText } = e.target as HTMLTableCellElement;

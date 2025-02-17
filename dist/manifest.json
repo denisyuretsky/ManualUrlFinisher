@@ -6,14 +6,14 @@
   "author": "Denis Yuretsky",
   "action": {
     "default_title": "Manual URL Finisher",
-    "default_popup": "dist/popup/selectNumbers.html"
+    "default_popup": "popup/popup.html"
   },
   "permissions": [
     "activeTab",
     "storage"
   ],
   "options_ui": {
-    "page": "dist/options/options.html",
+    "page": "options/options.html",
     "open_in_tab": true
   }
 }
