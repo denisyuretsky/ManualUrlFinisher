@@ -4,7 +4,7 @@ import { ROWS_COUNT, DEFAULT_NUMBER } from "../shared/constants";
 import { loadStorageData, saveStorageData } from "../shared/storage";
 import { StorageData, OptionNumber } from "../shared/types";
 
-const handleSubmit = (event: SubmitEvent) => {
+const handleSubmit = (event: SubmitEvent): void => {
   event.preventDefault();
   let numbers: OptionNumber[] = [];
 
@@ -28,9 +28,12 @@ const handleSubmit = (event: SubmitEvent) => {
       statusElement.textContent = "";
     }, 750);
   })
+    .catch((error) => {
+      console.error("Error while saving storage data:", error);
+    });
 };
 
-const initialize = () => {
+const initialize = (): void => {
   loadStorageData().then((storageData: StorageData) => {
     storageData.numbers.forEach((value, index) => {
       const selectElement = document.getElementById(`muf-number-${index}`) as HTMLSelectElement;
@@ -39,7 +42,10 @@ const initialize = () => {
 
     let textElement = document.getElementById("muf-url") as HTMLInputElement
     textElement.value = storageData.contentUrl;
-  });
+  })
+    .catch((error) => {
+      console.error("Error while loading storage data:", error);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

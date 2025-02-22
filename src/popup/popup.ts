@@ -21,10 +21,10 @@ const updateDisplayedResult = (): string => {
   return resultText;
 }
 
-const addValueToTempHistory = (key: number) => {
+const addValueToTempHistory = (key: number): void => {
   const now = Date.now();
 
-  tempHistory[key] = tempHistory[key] || { count: 0, timestamp: now };
+  tempHistory[key] = tempHistory[key] ?? { count: 0, timestamp: now };
   tempHistory[key].count++;
   tempHistory[key].timestamp = now;
 
@@ -36,11 +36,14 @@ const addValueToTempHistory = (key: number) => {
   }
 };
 
-const openChromeTab = (value: string) => {
-  chrome.tabs.create({ url: `${contentUrl}${value}` });
+const openChromeTab = (value: string): void => {
+  chrome.tabs.create({ url: `${contentUrl}${value}` })
+    .catch((error) => {
+      console.error("Error while opening a tab:", error);
+    });
 }
 
-const handleHistory = (action: HistoryAction, value?: string, callBack?: (value: string) => void): void => {
+const handleHistory = (action: HistoryAction, value?: string, callBack?: (callBackValue: string) => void): void => {
   switch (action) {
     case "add":
       addValueToTempHistory(Number(value));
@@ -60,14 +63,17 @@ const handleHistory = (action: HistoryAction, value?: string, callBack?: (value:
   saveStorageData({ history: tempHistory }).then(() => {
     updateDisplayedHistory();
 
-    if (callBack && value) {
+    if (callBack && typeof value === 'string' && value.length > 0) {
       callBack(value)
     }
-  });
+  })
+    .catch((error) => {
+      console.error("Error while saving storage data:", error);
+    });;
 };
 
 
-const addClearButton = (li: HTMLLIElement, value: string) => {
+const addClearButton = (li: HTMLLIElement, value: string): void => {
   const clearIcon = document.createElement("span");
   clearIcon.className = "clear-icon";
   clearIcon.innerHTML = "&#128711;"; // HTML of Prohibited Sign
@@ -107,7 +113,7 @@ const updateDisplayedHistory = (): void => {
 
 const areAllNumbersEntered = (): boolean => tempResult.every((number) => number >= 0);
 
-const handleCellClick = (e: MouseEvent) => {
+const handleCellClick = (e: MouseEvent): void => {
   const { cellIndex, innerText } = e.target as HTMLTableCellElement;
   tempResult[cellIndex] = Number(innerText) as OptionNumber;
 
@@ -126,17 +132,19 @@ const initialize = (): void => {
     contentUrl = storageData.contentUrl;
     tempHistory = storageData.history;
 
-    if (table) {
-      storageData.numbers.forEach((number, index) => {
-        if (number >= 0 && table.rows[number]?.cells[index]) {
-          table.rows[number].cells[index].classList.add("selected");
-        }
-      });
-    }
+    storageData.numbers.forEach((number, index) => {
+      const cell = table.rows[number]?.cells[index];
+      if (number >= 0 && cell !== undefined) {
+        table.rows[number].cells[index].classList.add("selected");
+      }
+    });
 
     updateDisplayedResult();
     updateDisplayedHistory();
-  });
+  })
+    .catch((error) => {
+      console.error("Error while loading storage data:", error);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
