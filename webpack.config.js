@@ -12,7 +12,8 @@ module.exports = {
     output: {
         // Для каждого входа будет сгенерирован свой bundle, который попадёт в соответствующую папку.
         filename: '[name]/bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
     module: {
         rules: [

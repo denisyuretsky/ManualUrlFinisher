@@ -1,20 +1,26 @@
 :root {
-  --color-bg-light: #deebf4;   /* Base light background color for cells */
-  --color-bg-hover: #b0cade;   /* Background color on hover */
-  --color-bg-selected: #ffd6c6;/* Background color for selected item */
-  --color-bg-popup: #7fa4c0;   /* Popup background color */
-  --color-text: #356285;       /* Default text color */
+  /* Base light background color for cells */
+  --color-bg-light: #deebf4;
+  /* Background color on hover */
+  --color-bg-hover: #b0cade;
+  /* Background color for selected item */
+  --color-bg-selected: #ffd6c6;
+  /* Popup background color */
+  --color-bg-popup: #7fa4c0;
+  /* Default text color */
+  --color-text: #356285;
+  /* Color on delete button hover */
+  --color-text-delete-hover: #d9534f;
 }
 
 html,
 body {
-  width: 200px;
+  width: 25rem;
   margin: 0;
   padding: 0;
 }
 
 td {
-  width: 11%;
   text-align: center;
   font-size: 2em;
   background-color: var(--color-bg-light);
@@ -30,16 +36,73 @@ td:hover {
   background-color: var(--color-bg-selected);
 }
 
-.popup {
+.muf-popup {
   width: 100%;
-  display: grid;
+  display: flex;
   background-color: var(--color-bg-popup);
+  user-select: none;
 }
 
-.result {
+.muf-options-result,
+.muf-history-header {
   width: 100%;
   margin: 0;
   text-align: center;
   font-size: 3em;
   color: var(--color-bg-light);
+
+  .clear-icon{
+    font-size: 0.7em;
+  }
+}
+
+.muf-options,
+.muf-history {
+  width: 50%;
+}
+
+.muf-history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.muf-options-table {
+  width: 100%;
+}
+
+.muf-history-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2em;
+  background-color: var(--color-bg-light);
+  color: var(--color-text);
+  cursor: pointer;
+  margin: 0.125rem;
+  padding: 0.0625rem;
+
+  /* Initially, the clear icon is hidden */
+  .clear-icon {
+    opacity: 0;
+  }
+
+  &:hover {
+    background-color: var(--color-bg-hover);
+
+    /* When hovering over the list item, display the clear icon */
+    .clear-icon {
+      opacity: 1;
+    }
+  }
+
+}
+
+.clear-icon {
+  width: 1em;
+  transform-origin: center;
+
+  &:hover {
+    color: var(--color-text-delete-hover);
+    cursor: pointer;
+  }
 }
