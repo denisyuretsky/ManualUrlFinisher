@@ -28,7 +28,7 @@ const handleSubmit = (event: Readonly<SubmitEvent>): void => {
       statusElement.textContent = "";
     }, OPTIONS_SAVED_DELAY_IN_MS);
   })
-    .catch((error: Error) => {
+    .catch((error: unknown) => {
       console.error("Error while saving storage data:", error);
     });
 };
@@ -43,7 +43,7 @@ const initialize = (): void => {
     const textElement = document.getElementById("muf-url") as HTMLInputElement
     textElement.value = storageData.contentUrl;
   })
-    .catch((error: Error) => {
+    .catch((error: unknown) => {
       console.error("Error while loading storage data:", error);
     });
 }

@@ -1,7 +1,7 @@
 import { DEFAULT_CONTENT_URL, ROWS_COUNT, DEFAULT_NUMBER } from "./constants";
 import type { OptionNumber, StorageData } from "../shared/types";
 
-export const loadStorageData = (
+export const loadStorageData = async (
   defaults: StorageData = {
     contentUrl: DEFAULT_CONTENT_URL,
     numbers: Array<OptionNumber>(ROWS_COUNT).fill(DEFAULT_NUMBER),
@@ -17,7 +17,7 @@ export const loadStorageData = (
   });
 };
 
-export const saveStorageData = (data: Partial<StorageData>): Promise<void> => {
+export const saveStorageData = async (data: Partial<StorageData>): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
     chrome.storage.local.set(data, () => {
       if (chrome.runtime.lastError) {

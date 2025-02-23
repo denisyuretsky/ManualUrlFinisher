@@ -29,7 +29,7 @@ const addValueToTempHistory = (key: number): void => {
   tempHistory[key].timestamp = now;
 
   // Store only 10 items in the history. Delete the oldest one. 
-  const keys: number[] = Object.keys(tempHistory).map(key => Number(key));
+  const keys: number[] = Object.keys(tempHistory).map(k => Number(k));
   if (keys.length > 10) {
     const oldestKey = keys.reduce((a, b) => (tempHistory[a].timestamp < tempHistory[b].timestamp ? a : b));
     delete tempHistory[oldestKey];
@@ -38,7 +38,7 @@ const addValueToTempHistory = (key: number): void => {
 
 const openChromeTab = (value: string): void => {
   chrome.tabs.create({ url: `${contentUrl}${value}` })
-    .catch((error) => {
+    .catch((error: unknown) => {
       console.error("Error while opening a tab:", error);
     });
 }
@@ -67,7 +67,7 @@ const handleHistory = (action: HistoryAction, value?: string, callBack?: (callBa
       callBack(value)
     }
   })
-    .catch((error) => {
+    .catch((error: unknown) => {
       console.error("Error while saving storage data:", error);
     });
 };
@@ -94,7 +94,7 @@ const createListItemElement = (key: string, value: HistoryValue): HTMLLIElement 
 
   addClearButton(li, key)
 
-  li.addEventListener("click", () => handleHistory("add", key, openChromeTab));
+  li.addEventListener("click", () => { handleHistory("add", key, openChromeTab); });
   return li;
 }
 
@@ -134,15 +134,15 @@ const initialize = (): void => {
 
     storageData.numbers.forEach((number, index) => {
       const cell = table.rows[number]?.cells[index];
-      if (number >= 0 && cell !== undefined) {
-        table.rows[number].cells[index].classList.add("selected");
+      if (number >= 0 && cell) {
+        cell.classList.add("selected");
       }
     });
 
     updateDisplayedResult();
     updateDisplayedHistory();
   })
-    .catch((error) => {
+    .catch((error: unknown) => {
       console.error("Error while loading storage data:", error);
     });
 }
@@ -150,7 +150,7 @@ const initialize = (): void => {
 document.addEventListener("DOMContentLoaded", () => {
   initialize();
 
-  document.querySelectorAll("td").forEach((cell) => cell.addEventListener("click", handleCellClick));
+  document.querySelectorAll("td").forEach((cell) => { cell.addEventListener("click", handleCellClick); });
 
-  clearAllHistoryElement.addEventListener("click", () => handleHistory("clearAll"))
+  clearAllHistoryElement.addEventListener("click", () => { handleHistory("clearAll"); })
 });
