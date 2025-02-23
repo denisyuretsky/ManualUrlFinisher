@@ -5,7 +5,7 @@ const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin'); // Minifie
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Copies static assets
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-module.exports = {
+module.exports = (env, argv) => ({
     entry: {
         options: './src/options/options.ts',
         popup: './src/popup/popup.ts'
@@ -28,6 +28,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
     },
+    devtool: argv.mode === 'development' ? 'source-map' : false,
     plugins: [
         new CopyWebpackPlugin({
             patterns: [
@@ -88,4 +89,4 @@ module.exports = {
             }),
         ],
     },
-};
+});
