@@ -3,6 +3,7 @@ const TerserPlugin = require('terser-webpack-plugin'); // Minifies JS code
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin'); // Minifies CSS code
 const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin'); // Minifies HTML files
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Copies static assets
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -36,6 +37,12 @@ module.exports = {
                 { from: 'src/popup/*.css', to: 'popup/[name][ext]' },
                 { from: 'src/manifest.json', to: 'manifest.json' },
             ]
+        }),
+        new ESLintPlugin({
+            configType: "flat",
+            extensions: ["ts"],
+            overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
+            formatter: "stylish",
         })
     ],
     // Optimization settings including code minification

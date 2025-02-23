@@ -2,7 +2,7 @@
 
 import { DEFAULT_CONTENT_URL, DEFAULT_NUMBER, DISPLAY_NAME_FOR_DEFAULT_NUMBER } from "../shared/constants";
 import { loadStorageData, saveStorageData } from "../shared/storage";
-import { OptionNumber, StorageData, HistoryValue, HistoryAction } from "../shared/types";
+import type { OptionNumber, StorageData, HistoryValue, HistoryAction } from "../shared/types";
 
 let tempResult: OptionNumber[] = [];
 let contentUrl = DEFAULT_CONTENT_URL;
@@ -49,7 +49,7 @@ const handleHistory = (action: HistoryAction, value?: string, callBack?: (callBa
       addValueToTempHistory(Number(value));
       break;
     case "delete":
-      if (tempHistory.hasOwnProperty(Number(value))) {
+      if (Object.prototype.hasOwnProperty.call(tempHistory, Number(value))) {
         delete tempHistory[Number(value)];
       }
       break;
@@ -69,7 +69,7 @@ const handleHistory = (action: HistoryAction, value?: string, callBack?: (callBa
   })
     .catch((error) => {
       console.error("Error while saving storage data:", error);
-    });;
+    });
 };
 
 
@@ -126,7 +126,7 @@ const handleCellClick = (e: MouseEvent): void => {
 
 const initialize = (): void => {
   loadStorageData().then((storageData: StorageData) => {
-    var table = document.getElementById("muf-options-table") as HTMLTableElement;
+    const table = document.getElementById("muf-options-table") as HTMLTableElement;
 
     tempResult = [...storageData.numbers];
     contentUrl = storageData.contentUrl;
