@@ -3,8 +3,10 @@ const TerserPlugin = require('terser-webpack-plugin'); // Minifies JS code
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin'); // Minifies CSS code
 const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin'); // Minifies HTML files
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Copies static assets
+const ESLintPlugin = require('eslint-webpack-plugin');
+const { HotModuleReplacementPlugin } = require('webpack');
 
-module.exports = {
+module.exports = (env, argv) => ({
     entry: {
         options: './src/options/options.ts',
         popup: './src/popup/popup.ts'
@@ -12,7 +14,8 @@ module.exports = {
     output: {
         // Для каждого входа будет сгенерирован свой bundle, который попадёт в соответствующую папку.
         filename: '[name]/bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
     module: {
         rules: [
@@ -26,6 +29,14 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
     },
+    devtool: argv.mode === 'development' ? 'source-map' : false,
+    devServer: {
+        static: {
+            directory: path.join(__dirname, 'dist'),
+          },
+        hot: true, // включение hot reload
+        open: false, // автоматически открыть браузер
+      },
     plugins: [
         new CopyWebpackPlugin({
             patterns: [
@@ -35,7 +46,14 @@ module.exports = {
                 { from: 'src/popup/*.css', to: 'popup/[name][ext]' },
                 { from: 'src/manifest.json', to: 'manifest.json' },
             ]
-        })
+        }),
+        new ESLintPlugin({
+            configType: "flat",
+            extensions: ["ts"],
+            overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
+            formatter: "stylish",
+        }),
+        ...(argv.mode === 'development' ? [new HotModuleReplacementPlugin()] : []),
     ],
     // Optimization settings including code minification
     optimization: {
@@ -80,4 +98,4 @@ module.exports = {
             }),
         ],
     },
-};
+});

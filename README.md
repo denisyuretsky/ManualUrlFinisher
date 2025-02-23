@@ -1,6 +1,6 @@
 # Manual URL Finisher
 
-**Manual URL Finisher** is a Chrome extension built using TypeScript and Webpack. The extension consists of two main parts:
+**Manual URL Finisher** is a Chrome extension that adds 4 numbers to the end of the provided URL and opens the URL in a new tab. It is built using TypeScript and Webpack. The extension consists of two main parts:
 - **Popup** – a quick-access interface.
 - **Options** – a settings page for configuring the extension.
 
@@ -42,6 +42,11 @@ project/
    ````
 
 ## Building the Project
+To build the extension for development, run:
+   ````
+   npm run dev
+   ````
+
 To build the extension for production, run:
    ````
    npm run build
