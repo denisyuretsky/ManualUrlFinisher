@@ -4,6 +4,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin'); // Minifies 
 const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin'); // Minifies HTML files
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Copies static assets
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { HotModuleReplacementPlugin } = require('webpack');
 
 module.exports = (env, argv) => ({
     entry: {
@@ -29,6 +30,13 @@ module.exports = (env, argv) => ({
         extensions: ['.ts', '.js'],
     },
     devtool: argv.mode === 'development' ? 'source-map' : false,
+    devServer: {
+        static: {
+            directory: path.join(__dirname, 'dist'),
+          },
+        hot: true, // включение hot reload
+        open: false, // автоматически открыть браузер
+      },
     plugins: [
         new CopyWebpackPlugin({
             patterns: [
@@ -44,7 +52,8 @@ module.exports = (env, argv) => ({
             extensions: ["ts"],
             overrideConfigFile: path.resolve(__dirname, "eslint.config.mjs"),
             formatter: "stylish",
-        })
+        }),
+        ...(argv.mode === 'development' ? [new HotModuleReplacementPlugin()] : []),
     ],
     // Optimization settings including code minification
     optimization: {
