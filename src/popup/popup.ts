@@ -2,7 +2,7 @@
 
 import { DEFAULT_CONTENT_URL, DEFAULT_NUMBER, DISPLAY_NAME_FOR_DEFAULT_NUMBER } from "../shared/constants";
 import { loadStorageData, saveStorageData } from "../shared/storage";
-import type { OptionNumber, StorageData, HistoryValue, HistoryAction } from "../shared/types";
+import { OptionNumber, StorageData, HistoryValue, HistoryAction } from "../shared/types";
 
 let tempResult: OptionNumber[] = [];
 let contentUrl = DEFAULT_CONTENT_URL;
@@ -45,15 +45,15 @@ const openChromeTab = (value: string): void => {
 
 const handleHistory = (action: HistoryAction, value?: string, callBack?: (callBackValue: string) => void): void => {
   switch (action) {
-    case "add":
+    case HistoryAction.Add:
       addValueToTempHistory(Number(value));
       break;
-    case "delete":
+    case HistoryAction.Delete:
       if (Object.prototype.hasOwnProperty.call(tempHistory, Number(value))) {
         delete tempHistory[Number(value)];
       }
       break;
-    case "clearAll":
+    case HistoryAction.ClearAll:
       tempHistory = {}
       break;
     default:
@@ -81,7 +81,7 @@ const addClearButton = (li: HTMLLIElement, value: string): void => {
 
   clearIcon.addEventListener("click", (event: MouseEvent) => {
     event.stopPropagation(); // prevent click on li
-    handleHistory("delete", value)
+    handleHistory(HistoryAction.Delete, value)
   });
 
   li.appendChild(clearIcon);
@@ -94,7 +94,7 @@ const createListItemElement = (key: string, value: HistoryValue): HTMLLIElement 
 
   addClearButton(li, key)
 
-  li.addEventListener("click", () => { handleHistory("add", key, openChromeTab); });
+  li.addEventListener("click", () => { handleHistory(HistoryAction.Add, key, openChromeTab); });
   return li;
 }
 
@@ -120,7 +120,7 @@ const handleCellClick = (e: MouseEvent): void => {
   const resultText = updateDisplayedResult();
 
   if (areAllNumbersEntered()) {
-    handleHistory("add", resultText, openChromeTab)
+    handleHistory(HistoryAction.Add, resultText, openChromeTab)
   }
 }
 
@@ -152,5 +152,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll("td").forEach((cell) => { cell.addEventListener("click", handleCellClick); });
 
-  clearAllHistoryElement.addEventListener("click", () => { handleHistory("clearAll"); })
+  clearAllHistoryElement.addEventListener("click", () => { handleHistory(HistoryAction.ClearAll); })
 });
